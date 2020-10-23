@@ -62,11 +62,23 @@ const LoginForm = (props) => {
   const [password, setPassword] = useState('')
   
   return <>
-    <input type="text" defaultValue={username} placeholder="Username" />
-    <input type="password" defaultValue={password} placeholder="Password" />
+    <input type="text" value={username} placeholder="Username" onChange={
+    	(e) => {
+    		setUsername(e.target.value)
+    		console.log(username)
+    	}
+
+    } />
+    <input type="password" value={password} placeholder="Password" onChange={
+    	(e) => {
+    		setPassword(e.target.value)
+    	}
+    } />
     <button>Submit</button>
   </>
 }
+
+
 
 const SignupForm = (props) => {
   const [email, setEmail] = useState('')
@@ -74,9 +86,21 @@ const SignupForm = (props) => {
   const [password, setPassword] = useState('')
   
   return <>
-    <input type="email" defaultValue={email} placeholder="Email" />
-    <input type="text" defaultValue={username} placeholder="Username" />
-    <input type="password" defaultValue={password} placeholder="Password" />
+    <input type="email" value={email} placeholder="Email" onChange={
+    	(e) => {
+    		setEmail(e.target.value)
+    	}
+    } />
+    <input type="text" value={username} placeholder="Username" onChange={
+    	(e) => {
+    		setUsername(e.target.value)
+    	}
+    } />
+    <input type="password" value={password} placeholder="Password" onChange={
+    	(e) => {
+    		setPassword(e.target.value)
+    	}
+    } />
     <button>Submit</button>
   </>
 }
