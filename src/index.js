@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import "./style.css"
 
 // Overall, you want to be able to switch between forms.
-// 2) Make just one form show up at a time
 // 3) Make the buttons toggle which component is rendered
 // 4) Forward the ref from the ToggleableForm to the components
 // 5) Make a form's first input toggled when it is active using a side effect
@@ -53,7 +52,7 @@ const FormToggle = ({ children, currentIndex }) => {
   return null
 }
 
-const LoginForm = (props) => {
+const LoginForm = forwardRef((props, ref) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   
@@ -70,9 +69,9 @@ const LoginForm = (props) => {
     } />
     <button>Submit</button>
   </>
-}
+})
 
-const SignupForm = (props) => {
+const SignupForm = forwardRef((props, ref) => {
   const [email, setEmail] = useState('')
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -95,6 +94,6 @@ const SignupForm = (props) => {
     } />
     <button>Submit</button>
   </>
-}
+})
 
 ReactDOM.render(<App />, document.getElementById('root'));
