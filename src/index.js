@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import "./style.css"
 
 // Overall, you want to be able to switch between forms.
-// 1) Turn the Login/Signup forms into controlled components
 // 2) Make just one form show up at a time
 // 3) Make the buttons toggle which component is rendered
 // 4) Forward the ref from the ToggleableForm to the components
@@ -23,12 +22,12 @@ const App = () => {
 }
 
 const ToggleableForm = ({ options }) => {
-  const currentForm = 0 // Change this to 1 to get the Signup form to show up
+  const [currentForm, setCurrentForm] = useState(0) // Change this to 1 to get the Signup form to show up
   let focusRef = 0
   
   return <>
     {options.map((el, index) => {
-      return <ButtonToggle key={`button${index}`}>{el.name}</ButtonToggle>
+      return <ButtonToggle key={`button${index}`} toggleForm={() => { setCurrentForm(index)}}>{el.name}</ButtonToggle>
     })}
     <FormToggle currentIndex={currentForm}>
       {options.map((el, index) => {
@@ -42,17 +41,14 @@ const ToggleableForm = ({ options }) => {
 
 const ButtonToggle = ({ children, toggleRef, toggleForm }) => {
   return <button onClick={() => {
-    // Hmm, things should happen here
+    toggleForm()
   }}>{children}</button>
 }
 
 const FormToggle = ({ children, currentIndex }) => {
   if (Array.isArray(children)) {
-    return <div>{children}</div>
-      // Remember, `children` is an array when there's multiple!
-      // So, if you want to show all the forms, you just put
-      // `children`.
-      // What would you do if you just wanted to show one?
+    return <div>{children[currentIndex]}</div>
+     
   }
   return null
 }
@@ -65,9 +61,7 @@ const LoginForm = (props) => {
     <input type="text" value={username} placeholder="Username" onChange={
     	(e) => {
     		setUsername(e.target.value)
-    		console.log(username)
     	}
-
     } />
     <input type="password" value={password} placeholder="Password" onChange={
     	(e) => {
@@ -77,8 +71,6 @@ const LoginForm = (props) => {
     <button>Submit</button>
   </>
 }
-
-
 
 const SignupForm = (props) => {
   const [email, setEmail] = useState('')
