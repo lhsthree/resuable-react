@@ -3,8 +3,6 @@ import ReactDOM from 'react-dom';
 import "./style.css"
 
 // Overall, you want to be able to switch between forms.
-// 3) Make the buttons toggle which component is rendered
-// 4) Forward the ref from the ToggleableForm to the components
 // 5) Make a form's first input toggled when it is active using a side effect
 
 const App = () => {
@@ -22,7 +20,7 @@ const App = () => {
 
 const ToggleableForm = ({ options }) => {
   const [currentForm, setCurrentForm] = useState(0) // Change this to 1 to get the Signup form to show up
-  let focusRef = 0
+  let focusRef = useRef(null)
   
   return <>
     {options.map((el, index) => {
@@ -31,7 +29,7 @@ const ToggleableForm = ({ options }) => {
     <FormToggle currentIndex={currentForm}>
       {options.map((el, index) => {
         return <div key={`form${index}`}>
-          {createElement(el.component, { /* Hmm, what should go here?*/ })}
+          {createElement(el.component, { ref: focusRef })}
         </div>
       })}
     </FormToggle>
@@ -56,8 +54,13 @@ const LoginForm = forwardRef((props, ref) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   
+
+  useEffect(() => {
+  	ref.current.focus()
+  }, [])
+
   return <>
-    <input type="text" value={username} placeholder="Username" onChange={
+    <input type="text" value={username} ref={ref} placeholder="Username" onChange={
     	(e) => {
     		setUsername(e.target.value)
     	}
@@ -75,25 +78,25 @@ const SignupForm = forwardRef((props, ref) => {
   const [email, setEmail] = useState('')
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+
+  useEffect(() => {
+  	ref.current.focus()
+  }, [])
+
   
   return <>
-    <input type="email" value={email} placeholder="Email" onChange={
-    	(e) => {
-    		setEmail(e.target.value)
-    	}
-    } />
-    <input type="text" value={username} placeholder="Username" onChange={
-    	(e) => {
-    		setUsername(e.target.value)
-    	}
-    } />
-    <input type="password" value={password} placeholder="Password" onChange={
-    	(e) => {
-    		setPassword(e.target.value)
-    	}
-    } />
+    <input type="email" value={email} ref={ref} placeholder="Email" onChange={(e) => {
+      setEmail(e.target.value)
+    }} />
+    <input type="text" value={username} placeholder="Username" onChange={(e) => {
+      setUsername(e.target.value)
+    }} />
+    <input type="password" value={password} placeholder="Password" onChange={(e) => {
+      setPassword(e.target.value)
+    }} />
     <button>Submit</button>
   </>
 })
+
 
 ReactDOM.render(<App />, document.getElementById('root'));
